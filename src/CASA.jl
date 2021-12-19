@@ -27,7 +27,17 @@ automatically proxy all "property" requests to the underlying `PyObject` that
 wraps `casalog`.  This means that you can use, for example,
 `CASA.log.logfile()` to call the `logfile` function on CASA's `casalog` object.
 The one special case is `CASA.log.casalog` which will return the `PyObject`
-itself, which can be useful for "tab completion" in the Julia REPL.
+itself (useful for "tab completion" in the Julia REPL).
+
+!!! tip
+
+    CASA's logger like to create log files by default.  You can put
+    `logfile="/dev/null"` in your `~/.casa/config.py` file to send the log
+    messages to `/dev/null`.  This can be changed at runtime via
+    `CASA.log.setlogfile("my_important_casa_info.log")`.
+
+    You can also have CASA log messages printed to the console with
+    `CASA.log.showconsole(true)`.
 """
 const log = Log(py"None")
 
