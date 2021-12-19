@@ -12,16 +12,19 @@ packages into the Conda.jl environment.
 
 The CASA functionality is listed below.  Most the CASA classes/functions are
 exported from the `CASA` module using the same name as in Python.  One
-exceptions is `casatools.table`, which is exported as `casatable` to prevent
-potential name collisions.
+exceptions is `casatools.table`, which is not exported because `table` is too
+generic of a name.  Instead, `casatools.table` can be used as `CASA.table`.
 
 - From `casaplotms`:
   - `plotms`
 
 - From `casatasks`:
+  - `applycal`
   - `bandpass`
+  - `clearcal`
   - `concat`
   - `gaincal`
+  - `listcal`
   - `listobs`
   - `listvis`
   - `tclean`
@@ -29,10 +32,31 @@ potential name collisions.
   - `vishead`
 
 - From `casatools`:
-  - `table` (exported as `casatable`)
+  - `table` (NOT exported, use as `CASA.table`)
 
 - From `casaviewer`:
   - `imview`
+
+## CASA Logging
+
+`CASA.log` provides access to CASA's default `logsink` instance named
+`casalog`.  See the CASA documentation for information on `logsink`.  `CASA.jl`
+also provides a specialized version of `getproperty` for `CASA.log` that will
+automatically proxy all "property" requests to the underlying `PyObject` that
+wraps `casalog`.  This means that you can use, for example,
+`CASA.log.logfile()` to call the `logfile` function on CASA's `casalog` object.
+The one special case is `CASA.log.casalog` which will return the `PyObject`
+itself (useful for "tab completion" in the Julia REPL).
+
+!!! tip
+
+    CASA's logger like to create log files by default.  You can put
+    `logfile="/dev/null"` in your `~/.casa/config.py` file to send the log
+    messages to `/dev/null`.  This can be changed at runtime via
+    `CASA.log.setlogfile("my_important_casa_info.log")`.
+
+    You can also have CASA log messages printed to the console with
+    `CASA.log.showconsole(true)`.
 
 ## Usage
 
