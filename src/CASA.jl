@@ -1,64 +1,61 @@
 module CASA
 
-# casaplotms
-export plotms
-
-# casatasks
-export bandpass
-export concat
-export gaincal
-export listobs
-export listvis
-export tclean
-export virtualconcat
-export vishead
-
-# casatools
-export casatable
-
-# casaviewer
-export imview
-
 using PyCall
+
+const CASA_MOD_FUNCS = (
+    :casaplotms => (:plotms,),
+    :casatasks  => (:applycal, :bandpass, :clearcal, :concat, :gaincal,
+                    :listcal, :listobs, :listvis, :tclean, :virtualconcat,
+                    :vishead),
+    :casatools  => (:table,),
+    :casaviewer => (:imview,)
+)
+
+const CASA_NO_EXPORTS = (
+    :table,
+)
+
+mutable struct Log
+  casalog::PyObject
+end
+
+"""
+`CASA.log` provides access to CASA's default `logsink` instance named
+`casalog`.  See the CASA documentation for information on `logsink`.  `CASA.jl`
+also provides a specialized version of `getproperty` for `CASA.log` that will
+automatically proxy all "property" requests to the underlying `PyObject` that
+wraps `casalog`.  This means that you can use, for example,
+`CASA.log.logfile()` to call the `logfile` function on CASA's `casalog` object.
+The one special case is `CASA.log.casalog` which will return the `PyObject`
+itself, which can be useful for "tab completion" in the Julia REPL.
+"""
+const log = Log(py"None")
+
+function Base.getproperty(o::Log, sym::Symbol)
+  sym == :casalog ? invoke(getproperty, Tuple{Any,Symbol}, o, sym) :
+                    getproperty(o.casalog, sym)
+end
 
 function __init__()
     py"""
     import scipy
-
-    from casaplotms.plotms import plotms
-
-    from casatasks.bandpass import bandpass
-    from casatasks.concat import concat
-    from casatasks.gaincal import gaincal
-    from casatasks.listobs import listobs
-    from casatasks.listvis import listvis
-    from casatasks.tclean import tclean
-    from casatasks.virtualconcat import virtualconcat
-    from casatasks.vishead import vishead
-
-    from casatools.table import table
-
-    from casaviewer.imview import imview
+    from casatasks import casalog
     """
+    log.casalog = py"casalog"
 end
 
-# casaplotms
-plotms(args...; kwargs...) = py"plotms"(args...; kwargs...)
+const PyMods = Dict{String, PyObject}()
 
-# casatasks
-bandpass(args...; kwargs...) = py"bandpass"(args...; kwargs...)
-concat(args...; kwargs...) = py"concat"(args...; kwargs...)
-gaincal(args...; kwargs...) = py"gaincal"(args...; kwargs...)
-listobs(args...; kwargs...) = py"listobs"(args...; kwargs...)
-listvis(args...; kwargs...) = py"listvis"(args...; kwargs...)
-tclean(args...; kwargs...) = py"tclean"(args...; kwargs...)
-virtualconcat(args...; kwargs...) = py"virtualconcat"(args...; kwargs...)
-vishead(args...; kwargs...) = py"vishead"(args...; kwargs...)
-
-# casatools
-casatable(args...; kwargs...) = py"table"(args...; kwargs...)
-
-# casaviewer
-imview(args...; kwargs...) = py"imview"(args...; kwargs...)
+for (mod, funcs) in CASA_MOD_FUNCS
+    for func in funcs
+        @eval function $func(args...; kwargs...)
+                m = get!(PyMods, $(string(mod, ".", func)), pyimport($(string(mod, ".", func))))
+                m.$func(args...; kwargs...)
+        end
+        if !(func in CASA_NO_EXPORTS)
+            @eval export $func
+        end
+    end
+end
 
 end
