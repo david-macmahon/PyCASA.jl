@@ -1,4 +1,4 @@
-module CASA
+module PyCASA
 
 using PyCall
 
@@ -40,24 +40,24 @@ mutable struct Log
 end
 
 """
-`CASA.log` provides access to CASA's default `logsink` instance named
-`casalog`.  See the CASA documentation for information on `logsink`.  `CASA.jl`
-also provides a specialized version of `getproperty` for `CASA.log` that will
-automatically proxy all "property" requests to the underlying `PyObject` that
-wraps `casalog`.  This means that you can use, for example,
-`CASA.log.logfile()` to call the `logfile` function on CASA's `casalog` object.
-The one special case is `CASA.log.casalog` which will return the `PyObject`
-itself (useful for "tab completion" in the Julia REPL).
+`PyCASA.log` provides access to CASA's default `logsink` instance named
+`casalog`.  See the CASA documentation for information on `logsink`.
+`PyCASA.jl` also provides a specialized version of `getproperty` for
+`PyCASA.log` that will automatically proxy all "property" requests to the
+underlying `PyObject` that wraps `casalog`.  This means that you can use, for
+example, `PyCASA.log.logfile()` to call the `logfile` function on CASA's
+`casalog` object.  The one special case is `PyCASA.log.casalog` which will
+return the `PyObject` itself (useful for "tab completion" in the Julia REPL).
 
 !!! tip
 
     CASA's logger like to create log files by default.  You can put
     `logfile="/dev/null"` in your `~/.casa/config.py` file to send the log
     messages to `/dev/null`.  This can be changed at runtime via
-    `CASA.log.setlogfile("my_important_casa_info.log")`.
+    `PyCASA.log.setlogfile("my_important_casa_info.log")`.
 
-    You can also have CASA log messages printed to the console with
-    `CASA.log.showconsole(true)`.
+    You can also have PyCASA log messages printed to the console with
+    `PyCASA.log.showconsole(true)`.
 """
 const log = Log(py"None")
 

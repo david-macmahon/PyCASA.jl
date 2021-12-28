@@ -1,5 +1,5 @@
-name = "CASA"
-uuid = "c7590c19-8f20-4975-b2a9-a0df4859c40d"
+name = "PyCASA"
+uuid = "c0371cf2-69c1-404b-9565-f01b56f8974e"
 authors = ["David MacMahon <davidm@astro.berkeley.edu> and contributors"]
 version = "0.2.0"
 

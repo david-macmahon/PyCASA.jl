@@ -1,4 +1,4 @@
-# CASA.jl - Julia wrappers for CASA tasks and tools
+# PyCASA.jl - Julia wrappers for CASA tasks and tools
 
 [CASA](https://casa.nrao.edu/), the *Common Astronomy Software Applications*,
 is the primary data processing software for the Atacama Large
@@ -15,10 +15,10 @@ packages via Python libraries (i.e. not a sub-process).
 ## Supported CASA tasks and tools
 
 The supported CASA functionality is listed below.  Most of these CASA
-classes/functions are exported from the `CASA` module using the same name as in
-Python.  One exceptions is `casatools.table`, which is not exported because
+classes/functions are exported from the `PyCASA` module using the same name as
+in Python.  One exceptions is `casatools.table`, which is not exported because
 `table` is too generic of a name.  Instead, `casatools.table` can be used as
-`CASA.table`.
+`PyCASA.table`.
 
 For details on these functions, please consult the [extensive CASA
 documentaion](https://casadocs.readthedocs.io/en/stable/).
@@ -41,21 +41,21 @@ documentaion](https://casadocs.readthedocs.io/en/stable/).
   - `vishead`
 
 - From `casatools`:
-  - `table` (NOT exported, use as `CASA.table`)
+  - `table` (NOT exported, use as `PyCASA.table`)
 
 - From `casaviewer`:
   - `imview`
 
 ## CASA Logging
 
-`CASA.log` provides access to CASA's default `logsink` instance named
-`casalog`.  See the CASA documentation for information on `logsink`.  `CASA.jl`
-also provides a specialized version of `getproperty` for `CASA.log` that will
-automatically proxy all "property" requests to the underlying `PyObject` that
-wraps `casalog`.  This means that you can use, for example,
-`CASA.log.logfile()` to call the `logfile` function on CASA's `casalog` object.
-The one special case is `CASA.log.casalog` which will return the `PyObject`
-itself (useful for "tab completion" in the Julia REPL).
+`PyCASA.log` provides access to CASA's default `logsink` instance named
+`casalog`.  See the CASA documentation for information on `logsink`.
+`PyCASA.jl` also provides a specialized version of `getproperty` for
+`PyCASA.log` that will automatically proxy all "property" requests to the
+underlying `PyObject` that wraps `casalog`.  This means that you can use, for
+example, `PyCASA.log.logfile()` to call the `logfile` function on CASA's
+`casalog` object.  The one special case is `PyCASA.log.casalog` which will
+return the `PyObject` itself (useful for "tab completion" in the Julia REPL).
 
 CASA's logger really likes to create log files by default.  You can configure
 CASA to send these logs to `/dev/null` by default.  Just run the following
@@ -68,30 +68,30 @@ $ echo 'logfile="/dev/null"' >> ~/.casa/config.py
 This can be changed at runtime via:
 
 ```julia
-julia> CASA.log.setlogfile("my_important_casa_info.log")
+julia> PyCASA.log.setlogfile("my_important_casa_info.log")
 ```
 
 You can show CASA log messages on your terminal with:
 
 ```julia
-julia> CASA.log.showconsole(true)
+julia> PyCASA.log.showconsole(true)
 ```
 
 Pass `false` to stop showing log messages on your terminal.
 
 ## Installation details
 
-When CASA.jl is installed, its `build.jl` script is run (also when running
-`]build CASA` in the Julia REPL any time after installation).  This script uses
-[Conda.jl](https://github.com/JuliaPy/Conda.jl) to install the requisite CASA
-Python packages.
+When PyCASA.jl is installed, its `build.jl` script is run (also when running
+`]build PyCASA` in the Julia REPL any time after installation).  This script
+uses [Conda.jl](https://github.com/JuliaPy/Conda.jl) to install the requisite
+CASA Python packages.
 
 NB: Because the CASA packages are distributed on [PyPi](https://pypi.org), the
 `build.jl` script will enable pip interoperability of the Conda.jl managed
 conda environment.
 
 If you encounter problems during the build step, you can check the `build.log`
-file or run the build in verbose mode with `]build -v CASA`.
+file or run the build in verbose mode with `]build -v PyCASA`.
 
 ## Usage
 
@@ -99,7 +99,7 @@ Here is a quick example of how to use this package.  Please see the CASA
 documentaion for more details.
 
 ```julia
-julia> using CASA, PrettyPrint
+julia> using PyCASA, PrettyPrint
 
 julia> pprint(listobs("dataset.ms")) # More info goes to CASA log
 {
