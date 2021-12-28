@@ -23,6 +23,7 @@ generic of a name.  Instead, `casatools.table` can be used as `CASA.table`.
   - `bandpass`
   - `clearcal`
   - `concat`
+  - `flagdata`
   - `gaincal`
   - `listcal`
   - `listobs`

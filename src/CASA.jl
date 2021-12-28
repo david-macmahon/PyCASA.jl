@@ -12,6 +12,7 @@ const CASA_MOD_FUNCS = (
                     :bandpass,
                     :clearcal,
                     :concat,
+                    :flagdata,
                     :gaincal,
                     :listcal,
                     :listobs,
