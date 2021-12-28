@@ -1,19 +1,27 @@
-# CASA
+# CASA.jl - Julia wrappers for CASA tasks and tools
 
-Julia wrappers for some CASA tasks/tools.
+[CASA](https://casa.nrao.edu/), the *Common Astronomy Software Applications*,
+is the primary data processing software for the Atacama Large
+Millimeter/submillimeter Array
+([ALMA](https://public.nrao.edu/telescopes/alma/)) and Karl G. Jansky Very
+Large Array ([VLA](https://public.nrao.edu/venue/the-very-large-array/)), and
+is often used also for other radio telescopes.
 
-This package works via PyCall.jl to call into a CASA Python packages that have
-been installed into a Conda.jl environment.  Currently the CASA Python packages
-must be installed by hand before this package will work.  In the future, the
-package will get a `build.jl` script that will install the requisite Python
-packages into the Conda.jl environment.
+This package allows you to use CASA tasks and tools from
+[Julia](https://julialang.org/).  It uses
+[PyCall.jl](https://github.com/JuliaPy/PyCall.jl) to call into the CASA Python
+packages via Python libraries (i.e. not a sub-process).
 
 ## Supported CASA tasks and tools
 
-The CASA functionality is listed below.  Most the CASA classes/functions are
-exported from the `CASA` module using the same name as in Python.  One
-exceptions is `casatools.table`, which is not exported because `table` is too
-generic of a name.  Instead, `casatools.table` can be used as `CASA.table`.
+The supported CASA functionality is listed below.  Most of these CASA
+classes/functions are exported from the `CASA` module using the same name as in
+Python.  One exceptions is `casatools.table`, which is not exported because
+`table` is too generic of a name.  Instead, `casatools.table` can be used as
+`CASA.table`.
+
+For details on these functions, please consult the [extensive CASA
+documentaion](https://casadocs.readthedocs.io/en/stable/).
 
 - From `casaplotms`:
   - `plotms`
@@ -49,15 +57,41 @@ wraps `casalog`.  This means that you can use, for example,
 The one special case is `CASA.log.casalog` which will return the `PyObject`
 itself (useful for "tab completion" in the Julia REPL).
 
-!!! tip
+CASA's logger really likes to create log files by default.  You can configure
+CASA to send these logs to `/dev/null` by default.  Just run the following
+command (one time only) in your shell:
 
-    CASA's logger like to create log files by default.  You can put
-    `logfile="/dev/null"` in your `~/.casa/config.py` file to send the log
-    messages to `/dev/null`.  This can be changed at runtime via
-    `CASA.log.setlogfile("my_important_casa_info.log")`.
+```bash
+$ echo 'logfile="/dev/null"' >> ~/.casa/config.py
+```
 
-    You can also have CASA log messages printed to the console with
-    `CASA.log.showconsole(true)`.
+This can be changed at runtime via:
+
+```julia
+julia> CASA.log.setlogfile("my_important_casa_info.log")
+```
+
+You can show CASA log messages on your terminal with:
+
+```julia
+julia> CASA.log.showconsole(true)
+```
+
+Pass `false` to stop showing log messages on your terminal.
+
+## Installation details
+
+When CASA.jl is installed, its `build.jl` script is run (also when running
+`]build CASA` in the Julia REPL any time after installation).  This script uses
+[Conda.jl](https://github.com/JuliaPy/Conda.jl) to install the requisite CASA
+Python packages.
+
+NB: Because the CASA packages are distributed on [PyPi](https://pypi.org), the
+`build.jl` script will enable pip interoperability of the Conda.jl managed
+conda environment.
+
+If you encounter problems during the build step, you can check the `build.log`
+file or run the build in verbose mode with `]build -v CASA`.
 
 ## Usage
 
