@@ -3,12 +3,31 @@ module CASA
 using PyCall
 
 const CASA_MOD_FUNCS = (
-    :casaplotms => (:plotms,),
-    :casatasks  => (:applycal, :bandpass, :clearcal, :concat, :gaincal,
-                    :listcal, :listobs, :listvis, :tclean, :virtualconcat,
-                    :vishead),
-    :casatools  => (:table,),
-    :casaviewer => (:imview,)
+    :casaplotms => (
+                    :plotms,
+                   ),
+
+    :casatasks  => (
+                    :applycal,
+                    :bandpass,
+                    :clearcal,
+                    :concat,
+                    :gaincal,
+                    :listcal,
+                    :listobs,
+                    :listvis,
+                    :tclean,
+                    :virtualconcat,
+                    :vishead
+                   ),
+
+    :casatools  => (
+                    :table,
+                   ),
+
+    :casaviewer => (
+                    :imview,
+                   )
 )
 
 const CASA_NO_EXPORTS = (
