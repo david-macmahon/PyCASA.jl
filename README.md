@@ -36,6 +36,7 @@ documentaion](https://casadocs.readthedocs.io/en/stable/).
   - `listcal`
   - `listobs`
   - `listvis`
+  - `simobserve`
   - `tclean`
   - `virtualconcat`
   - `vishead`

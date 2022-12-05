@@ -17,6 +17,7 @@ const CASA_MOD_FUNCS = (
                     :listcal,
                     :listobs,
                     :listvis,
+                    :simobserve,
                     :tclean,
                     :virtualconcat,
                     :vishead
