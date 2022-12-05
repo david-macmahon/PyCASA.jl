@@ -80,6 +80,24 @@ julia> PyCASA.log.showconsole(true)
 
 Pass `false` to stop showing log messages on your terminal.
 
+## ComponentList
+
+`PyCASA.cl` is the equivalent of `cl` in CASA.  You can use it just like `cl` by
+doing:
+
+```julia
+import PyCASA: cl
+
+rm("point.cl", recursive=true, force=true)
+cl.done()
+cl.addcomponent(dir="J2000 10h00m00.08s -30d00m02.0s", flux=0.1, fluxunit="Jy", freq="230.0GHz", shape="point")
+cl.addcomponent(dir="J2000 09h59m59.92s -29d59m58.0s", flux=0.1, fluxunit="Jy", freq="230.0GHz", shape="point")
+cl.addcomponent(dir="J2000 10h00m00.40s -29d59m55.0s", flux=0.1, fluxunit="Jy", freq="230.0GHz", shape="point")
+cl.addcomponent(dir="J2000 09h59m59.60s -30d00m05.0s", flux=0.1, fluxunit="Jy", freq="230.0GHz", shape="point")
+cl.rename("point.cl")
+cl.done()
+```
+
 ## Installation details
 
 When PyCASA.jl is installed, its `build.jl` script is run (also when running

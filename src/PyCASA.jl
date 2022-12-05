@@ -67,12 +67,28 @@ function Base.getproperty(o::Log, sym::Symbol)
                     getproperty(o.casalog, sym)
 end
 
+function Base.getproperty(pyobjref::Ref{PyObject}, sym::Symbol)
+    if sym in fieldnames(typeof(pyobjref))
+        invoke(getproperty, Tuple{Any,Symbol}, pyobjref, sym)
+    else
+        getproperty(pyobjref[], sym)
+    end
+end
+
+function Base.propertynames(pyobjref::Ref{PyObject}, private::Bool=false)
+    propertynames(pyobjref[], private)
+end
+
+const cl = Ref{PyObject}(py"None")
+
 function __init__()
     py"""
     import scipy
     from casatasks import casalog
+    from casatools import componentlist
     """
     log.casalog = py"casalog"
+    cl[] = py"componentlist()"
 end
 
 const PyMods = Dict{String, PyObject}()
