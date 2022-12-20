@@ -80,15 +80,21 @@ function Base.propertynames(pyobjref::Ref{PyObject}, private::Bool=false)
 end
 
 const cl = Ref{PyObject}(py"None")
+const me = Ref{PyObject}(py"None")
+const qa = Ref{PyObject}(py"None")
 
 function __init__()
     py"""
     import scipy
     from casatasks import casalog
     from casatools import componentlist
+    from casatools import measures
+    from casatools import quanta
     """
     log.casalog = py"casalog"
     cl[] = py"componentlist()"
+    me[] = py"measures()"
+    qa[] = py"quanta()"
 end
 
 const PyMods = Dict{String, PyObject}()

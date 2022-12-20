@@ -63,7 +63,7 @@ CASA to send these logs to `/dev/null` by default.  Just run the following
 command (one time only) in your shell:
 
 ```bash
-$ echo 'logfile="/dev/null"' >> ~/.casa/config.py
+echo 'logfile="/dev/null"' >> ~/.casa/config.py
 ```
 
 This can be changed at runtime via:
@@ -96,6 +96,23 @@ cl.addcomponent(dir="J2000 10h00m00.40s -29d59m55.0s", flux=0.1, fluxunit="Jy", 
 cl.addcomponent(dir="J2000 09h59m59.60s -30d00m05.0s", flux=0.1, fluxunit="Jy", freq="230.0GHz", shape="point")
 cl.rename("point.cl")
 cl.done()
+```
+
+## Measures and Quanta
+
+`PyCASA.me` provides a default instance of CASA's `measures` class.  `PyCASA.qa`
+provides a default instance of CASA's `quanta` class.  You can use them as you
+would use `me` and `qa` in CASA as shown in this simple example:
+
+```julia
+import PyCASA: me, qa
+
+me.direction("j2000", qa.toangle("0h"), "-30deg")
+#Dict{Any, Any} with 4 entries:
+#  "refer" => "J2000"
+#  "m1"    => Dict{Any, Any}("unit"=>"rad", "value"=>-0.523599)
+#  "m0"    => Dict{Any, Any}("unit"=>"rad", "value"=>0.0)
+#  "type"  => "direction"
 ```
 
 ## Installation details
