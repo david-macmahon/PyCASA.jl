@@ -24,6 +24,9 @@ const CASA_MOD_FUNCS = (
                    ),
 
     :casatools  => (
+                    :componentlist,
+                    :measures,
+                    :quanta,
                     :table,
                    ),
 
