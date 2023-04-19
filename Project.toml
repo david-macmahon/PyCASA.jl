@@ -1,7 +1,7 @@
 name = "PyCASA"
 uuid = "c0371cf2-69c1-404b-9565-f01b56f8974e"
 authors = ["David MacMahon <davidm@astro.berkeley.edu> and contributors"]
-version = "0.2.4"
+version = "0.2.5"
 
 [deps]
 Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
