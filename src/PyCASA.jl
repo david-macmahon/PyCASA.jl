@@ -13,6 +13,7 @@ const CASA_MOD_FUNCS = (
                     :clearcal,
                     :concat,
                     :flagdata,
+                    :flagmanager,
                     :gaincal,
                     :listcal,
                     :listobs,
